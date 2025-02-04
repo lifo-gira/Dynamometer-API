@@ -24,7 +24,7 @@ class PatientData(BaseModel):
     email: EmailStr
     dob: Optional[str] = None
     blood_grp: Optional[str] = None
-    flag: bool = True
+    flag: int 
     height: Optional[int] = None
     weight: Optional[int] = None
     gender: Optional[str] = None
@@ -46,6 +46,6 @@ class PatientData(BaseModel):
                 "blood_grp": "O+",
                 "phone_number": "28917221",
                 "address": "asdsadasds",
-                "flag": True
+                "flag": 1
             }
         }
