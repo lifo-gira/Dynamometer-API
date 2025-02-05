@@ -61,7 +61,7 @@ async def post_patient_data(patient_data: PatientData):
     # Insert the patient data into the database
     result = await patient_data_collection.insert_one(patient_data.dict())
     
-    return {"message": "Patient data successfully added", "patient_id": str(result.inserted_id)}
+    return {"message": "Patient data successfully added"}
 
 @app.get("/patient-data", response_model=List[PatientData])
 async def get_patient_data(email: str):
