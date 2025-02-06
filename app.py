@@ -63,18 +63,12 @@ async def post_patient_data(patient_data: PatientData):
     
     return {"message": "Patient data successfully added"}
 
-@app.get("/patient-data", response_model=List[PatientData])
+@app.get("/patient-data", response_model=PatientData)
 async def get_patient_data(email: str):
-    if email:
-        # If email is provided, search for the patient by email
-        patient = await patient_data_collection.find_one({"email": email})
-        if patient:
-            return [PatientData(**patient)]  # Return as a list
-        else:
-            raise HTTPException(status_code=404, detail="Patient not found")
+    patient = await patient_data_collection.find_one({"email": email})
+    if patient:
+        return PatientData(**patient)  # Return a single object, not a list
     else:
-        # If no email is provided, retrieve all patients
-        patients_cursor = patient_data_collection.find({})
-        patients = [PatientData(**patient) for patient in await patients_cursor.to_list(length=100)]  # Adjust length as needed
-        return patients
+        raise HTTPException(status_code=404, detail="Patient not found")
+
 
