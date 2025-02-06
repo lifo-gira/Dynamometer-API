@@ -1,6 +1,18 @@
 from pydantic import BaseModel, EmailStr
 from typing import Optional
 
+class LoginRequest(BaseModel):
+    email: EmailStr
+    password: str
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "email": "APM@gmail.com",
+                "password": "21345"
+            }
+        }
+    
 
 class User(BaseModel):
     username: str

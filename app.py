@@ -3,7 +3,7 @@ from fastapi import  FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from db import user_collection,patient_data_collection
 
-from models import PatientData, User
+from models import LoginRequest, PatientData, User
 
 app = FastAPI()
 
@@ -20,17 +20,17 @@ def root():
     return {"Message": "use '/docs' endpoint to find all the api related docs "}
 
 @app.post("/login")
-async def login(user: User):
-    # Retrieve user from MongoDB based on the provided email
+async def login(user: LoginRequest):
+    # Retrieve user from MongoDB using email
     db_user = await user_collection.find_one({"email": user.email})
-    
+
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    
-    # Check if the password matches
+
+    # Validate password
     if db_user["password"] != user.password:
         raise HTTPException(status_code=401, detail="Incorrect password")
-    
+
     return {"message": "Login successful", "username": db_user["username"]}
 
 @app.post("/register")
