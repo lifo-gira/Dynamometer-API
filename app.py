@@ -1,9 +1,10 @@
 from typing import List
+from bson import ObjectId
 from fastapi import  FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from db import user_collection,patient_data_collection
 
-from models import LoginRequest, PatientData, User
+from models import ExerciseRecord, LoginRequest, PatientData, User
 
 app = FastAPI()
 
@@ -71,4 +72,27 @@ async def get_patient_data(email: str):
     else:
         raise HTTPException(status_code=404, detail="Patient not found")
 
+@app.post("/upload-exercise/")
+async def upload_exercise(email: str, first_name: str, last_name: str, exerciseRecord: List[ExerciseRecord]):
+    # Find the patient asynchronously
+    patient = await patient_data_collection.find_one({"email": email, "first_name": first_name, "last_name": last_name})
 
+    if not patient:
+        raise HTTPException(status_code=404, detail="Patient not found")
+
+    # Get existing exercise records
+    existing_exercise_records = patient.get("exerciseRecord", [])
+
+    for new_record in exerciseRecord:
+        new_record_dict = new_record.dict()  # Convert Pydantic model to dict
+        
+        # Directly stack the new data without checking for matches
+        existing_exercise_records.append(new_record_dict)
+
+    # Update the database with the stacked records
+    await patient_data_collection.update_one(
+        {"email": email, "first_name": first_name, "last_name": last_name},
+        {"$set": {"exerciseRecord": existing_exercise_records}}
+    )
+
+    return {"message": "Exercise record updated successfully"}
