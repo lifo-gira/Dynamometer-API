@@ -95,4 +95,8 @@ async def upload_exercise(email: str, first_name: str, last_name: str, exerciseR
         {"$set": {"exerciseRecord": existing_exercise_records}}
     )
 
-    return {"message": "Exercise record updated successfully"}
+    return [
+    {
+        "message": "Exercise record updated successfully"
+    }
+]
