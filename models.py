@@ -32,7 +32,7 @@ class ExerciseRecord(BaseModel):
     total_muscles: int
     device_name: str
     date: str
-    individual_reps: Dict[str, Dict[str, List[int]]]  # Rep group -> Muscle name -> Graph values
+    individual_reps: Dict[str, Dict[str, List[float]]]  # Rep group -> Muscle name -> Graph values
 
 class PatientData(BaseModel):
     user_id: str
