@@ -69,6 +69,26 @@ async def post_patient_data(patient_data: PatientData):
     
     return {"message": "Patient data successfully added"}
 
+@app.get("/patients", response_model=List[User])
+async def get_all_patients():
+    patients = await user_collection.find({"type": "patient"}).to_list(None)
+    
+    if not patients:
+        raise HTTPException(status_code=404, detail="No patients found")
+
+    return patients
+
+@app.get("/getUser/{email}", response_model=User)
+async def get_therapist_by_email(email: str):
+    therapist = await user_collection.find_one({"email": email, "type": "therapist"})
+    
+    if not therapist:
+        raise HTTPException(status_code=404, detail="Therapist not found")
+
+    return User(**therapist)
+
+
+
 @app.get("/patient-data", response_model=PatientData)
 async def get_patient_data(email: str):
     patient = await patient_data_collection.find_one({"email": email})
