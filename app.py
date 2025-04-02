@@ -32,7 +32,11 @@ async def login(user: LoginRequest):
     if db_user["password"] != user.password:
         raise HTTPException(status_code=401, detail="Incorrect password")
 
-    return {"message": "Login successful", "username": db_user["username"]}
+    return {
+        "message": "Login successful",
+        "username": db_user["username"],
+        "type": db_user["type"]  # Added type field
+    }
 
 @app.post("/register")
 async def register(user: User):
@@ -46,7 +50,8 @@ async def register(user: User):
     await user_collection.insert_one({
         "username": user.username,
         "email": user.email,
-        "password": user.password  # Store plain text password
+        "password": user.password,  # Store plain text password
+        "type": user.type  # Added type field
     })
     
     return {"message": "User registered successfully"}
@@ -73,14 +78,14 @@ async def get_all_patients():
 
     return patients
 
-# @app.get("/getUser/{email}", response_model=User)
-# async def get_therapist_by_email(email: str):
-#     therapist = await user_collection.find_one({"email": email, "type": "therapist"})
+@app.get("/getUser/{email}", response_model=User)
+async def get_therapist_by_email(email: str):
+    therapist = await user_collection.find_one({"email": email, "type": "therapist"})
     
-#     if not therapist:
-#         raise HTTPException(status_code=404, detail="Therapist not found")
+    if not therapist:
+        raise HTTPException(status_code=404, detail="Therapist not found")
 
-#     return User(**therapist)
+    return User(**therapist)
 
 
 

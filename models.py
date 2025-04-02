@@ -20,6 +20,7 @@ class User(BaseModel):
     username: str
     email: EmailStr
     password: str
+    type: Literal["patient", "therapist"]
 
     class Config:
         schema_extra = {
@@ -27,6 +28,7 @@ class User(BaseModel):
                 "username": "APM",
                 "email": "APM@gmail.com",
                 "password": "21345",
+                "type": "patient"
             }
         }
 
@@ -38,6 +40,7 @@ class ExerciseRecord(BaseModel):
 
 class PatientData(BaseModel):
     user_id: str
+    therapist_assigned: str
     username: Optional[str] = None
     first_name: str
     last_name: str
@@ -56,6 +59,7 @@ class PatientData(BaseModel):
         schema_extra = {
             "example": {
                 "user_id": "12345",
+                "therapist_assigned" : "therapist@gmail.com",
                 "username": "APM",
                 "first_name": "Anirudh",
                 "last_name": "Menon",
