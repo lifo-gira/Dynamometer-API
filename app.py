@@ -78,14 +78,14 @@ async def get_all_patients():
 
     return patients
 
-@app.get("/getUser/{email}", response_model=User)
-async def get_therapist_by_email(email: str):
-    therapist = await user_collection.find_one({"email": email, "type": "therapist"})
+# @app.get("/getUser/{email}", response_model=User)
+# async def get_therapist_by_email(email: str):
+#     therapist = await user_collection.find_one({"email": email, "type": "therapist"})
     
-    if not therapist:
-        raise HTTPException(status_code=404, detail="Therapist not found")
+#     if not therapist:
+#         raise HTTPException(status_code=404, detail="Therapist not found")
 
-    return User(**therapist)
+#     return User(**therapist)
 
 
 
