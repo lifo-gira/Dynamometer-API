@@ -32,11 +32,7 @@ async def login(user: LoginRequest):
     if db_user["password"] != user.password:
         raise HTTPException(status_code=401, detail="Incorrect password")
 
-    return {
-        "message": "Login successful",
-        "username": db_user["username"],
-        "type": db_user["type"]  # Added type field
-    }
+    return {"message": "Login successful", "username": db_user["username"]}
 
 @app.post("/register")
 async def register(user: User):
@@ -50,8 +46,7 @@ async def register(user: User):
     await user_collection.insert_one({
         "username": user.username,
         "email": user.email,
-        "password": user.password,  # Store plain text password
-        "type": user.type  # Added type field
+        "password": user.password  # Store plain text password
     })
     
     return {"message": "User registered successfully"}

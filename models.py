@@ -20,7 +20,6 @@ class User(BaseModel):
     username: str
     email: EmailStr
     password: str
-    type: Literal["patient", "therapist"]
 
     class Config:
         schema_extra = {
@@ -28,7 +27,6 @@ class User(BaseModel):
                 "username": "APM",
                 "email": "APM@gmail.com",
                 "password": "21345",
-                "type": "patient"
             }
         }
 
