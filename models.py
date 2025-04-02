@@ -1,13 +1,15 @@
 from pydantic import BaseModel, EmailStr
-from typing import Optional, List, Dict
+from typing import Literal, Optional, List, Dict
 
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str
+    type: Literal["patient", "therapist"]
 
     class Config:
         schema_extra = {
             "example": {
+                "type": "patient",
                 "email": "APM@gmail.com",
                 "password": "21345"
             }
@@ -18,13 +20,15 @@ class User(BaseModel):
     username: str
     email: EmailStr
     password: str
+    type: Literal["patient", "therapist"]
 
     class Config:
         schema_extra = {
             "example": {
                 "username": "APM",
                 "email": "APM@gmail.com",
-                "password": "21345"
+                "password": "21345",
+                "type": "patient"
             }
         }
 
